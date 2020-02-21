@@ -73319,6 +73319,7 @@ var ProjectsList =
 function (_Component) {
   _inherits(ProjectsList, _Component);
 
+  // _isMounted = false;
   function ProjectsList() {
     var _this;
 
@@ -73336,11 +73337,19 @@ function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/projects').then(function (response) {
-        _this2.setState({
-          projects: response.data
-        });
+      this._isMounted = true;
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/projects").then(function (response) {
+        if (_this2._isMounted) {
+          _this2.setState({
+            projects: response.data
+          });
+        }
       });
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this._isMounted = false;
     }
   }, {
     key: "render",
