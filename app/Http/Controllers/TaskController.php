@@ -9,17 +9,17 @@ class TaskController extends Controller
 {
     public function store(Request $request)
     {
-        $validateData = $request->validate([
-            'title' => 'required'
-        ]);
+        $validatedData = $request->validate(['title' => 'required']);
 
         $task = Task::create([
-            'title' => $validateData['title'],
-            'project_id' => $request->id,
+          'title' => $validatedData['title'],
+          'project_id' => $request->project_id,
         ]);
+
+        return $task->toJson();
     }
 
-    public function markAsComplete(Task $task)
+    public function markAsCompleted(Task $task)
     {
         $task->is_completed = true;
         $task->update();

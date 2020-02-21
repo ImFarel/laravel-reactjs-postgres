@@ -3,9 +3,6 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 class ProjectsList extends Component {
-
-    // _isMounted = false;
-
     constructor() {
         super();
         this.state = {

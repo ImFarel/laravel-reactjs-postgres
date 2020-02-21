@@ -21,14 +21,21 @@ class SingleProject extends Component {
     }
 
     componentDidMount() {
+        this._isMounted = true;
         const projectId = this.props.match.params.id;
 
         axios.get(`/api/projects/${projectId}`).then(response => {
-            this.setState({
-                project: response.data,
-                tasks: response.data.tasks
-            });
+            if (this._isMounted) {
+                this.setState({
+                    project: response.data,
+                    tasks: response.data.tasks
+                });
+            }
         });
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     handleMarkProjectAsCompleted() {
@@ -108,7 +115,10 @@ class SingleProject extends Component {
                             <div className="card-body">
                                 <p>{project.description}</p>
 
-                                <button className="btn btn-primary btn-sm">
+                                <button
+                                    className="btn btn-primary btn-sm"
+                                    onClick={this.handleMarkProjectAsCompleted}
+                                >
                                     Mark as completed
                                 </button>
 

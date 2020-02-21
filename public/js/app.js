@@ -73319,7 +73319,6 @@ var ProjectsList =
 function (_Component) {
   _inherits(ProjectsList, _Component);
 
-  // _isMounted = false;
   function ProjectsList() {
     var _this;
 
@@ -73455,13 +73454,21 @@ function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
+      this._isMounted = true;
       var projectId = this.props.match.params.id;
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/projects/".concat(projectId)).then(function (response) {
-        _this2.setState({
-          project: response.data,
-          tasks: response.data.tasks
-        });
+        if (_this2._isMounted) {
+          _this2.setState({
+            project: response.data,
+            tasks: response.data.tasks
+          });
+        }
       });
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this._isMounted = false;
     }
   }, {
     key: "handleMarkProjectAsCompleted",
@@ -73556,7 +73563,8 @@ function (_Component) {
       }, project.name), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "card-body"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, project.description), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-        className: "btn btn-primary btn-sm"
+        className: "btn btn-primary btn-sm",
+        onClick: this.handleMarkProjectAsCompleted
       }, "Mark as completed"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("hr", null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", {
         onSubmit: this.handleAddNewTask
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
